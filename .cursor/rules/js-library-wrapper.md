@@ -40,32 +40,62 @@ AS """
 
 When a user wants to wrap a JavaScript library function, follow this systematic approach:
 
-### 1. Library Analysis
+### 1. Library URL Validation (REQUIRED - DO NOT CONTINUE IF NOT PROVIDED)
+**CRITICAL**: Before proceeding with any library wrapper creation, you MUST:
+
+1. **Require GCS Bucket URL**: Ask the user to provide the GCS bucket URL where the JavaScript library is stored
+   - Format must be: `gs://bucket-name/path/to/library.js`
+   - Do NOT accept HTTP/HTTPS URLs (unpkg, CDN, etc.)
+   - Do NOT accept relative paths or local file paths
+
+2. **Verify Library Exists**: Use BigQuery to verify the library file exists at the provided URL
+   ```sql
+   -- Test if the library can be loaded by creating a temporary function
+   CREATE TEMP FUNCTION test_library_load()
+   RETURNS STRING
+   LANGUAGE js
+   OPTIONS (library = ['gs://bucket-name/path/to/library.js'])
+   AS """
+     return 'Library loaded successfully';
+   """;
+   
+   -- If this fails, the library doesn't exist or is invalid
+   SELECT test_library_load() as library_status;
+   ```
+
+3. **Validate File Format**: Ensure the file is a valid JavaScript library file
+   - Check file extension (.js) in the URL
+   - Verify the library loads without errors in BigQuery
+   - Confirm the library exports the expected functions
+
+**IF ANY OF THESE VALIDATIONS FAIL, DO NOT CONTINUE WITH THE WRAPPER CREATION.**
+
+### 2. Library Analysis
 - Extract the function signature from the library documentation
 - Identify input parameters and their types
 - Determine the return type
 - Understand any null handling requirements
 - Note any specific parameter validation or constraints
 
-### 2. Extension Setup
+### 3. Extension Setup
 - Create a new extension by copying the template structure
 - Update extension metadata with appropriate name, description, and version
 - Choose a descriptive component name that reflects the library function
 
-### 3. Component Configuration
+### 4. Component Configuration
 - Define inputs that match the JavaScript function parameters
 - Map JavaScript types to appropriate input types (String, Number, etc.)
 - Set up outputs that represent the function result
 - Add any necessary environment variables for library buckets
 
-### 4. SQL Implementation
+### 5. SQL Implementation
 - Create the BigQuery function with proper parameter mapping
 - Implement null checking for all parameters
 - Add appropriate type conversions (Number(), String(), etc.)
 - Handle edge cases and error conditions
 - Ensure deterministic behavior
 
-### 5. Documentation
+### 6. Documentation
 - Document the component's purpose and usage
 - Provide examples of input/output
 - Include any limitations or requirements
@@ -104,6 +134,22 @@ Common environment variables needed:
 - `@@BQ_LIBRARY_BUCKET@@` - GCS bucket containing the library
 - `@@BQ_PROJECT@@` - BigQuery project ID
 
+## Library Requirements
+
+**Important**: BigQuery JavaScript UDFs only support Google Cloud Storage (GCS) buckets for external libraries. You cannot use HTTP/HTTPS URLs (like unpkg, CDN, etc.).
+
+### Library Setup Process:
+1. **Download the library** from its source (npm, CDN, etc.)
+2. **Upload to GCS bucket** in your project
+3. **Reference the GCS URL** in your UDF
+
+### Example GCS Library Reference:
+```sql
+OPTIONS (
+    library = ["gs://my-bucket/path/to/library.js"]
+)
+```
+
 ## Testing Strategy
 
 Create test fixtures that:
@@ -125,12 +171,51 @@ Create test fixtures that:
 
 When a user says "wrap function X() from library Y", follow this workflow:
 
-1. **Research**: Look up the function documentation and understand its signature
-2. **Plan**: Determine the input/output structure and any special requirements
-3. **Create**: Generate the extension structure with appropriate metadata
-4. **Implement**: Write the SQL function with proper JavaScript integration
-5. **Test**: Create test cases to verify functionality
-6. **Document**: Provide clear documentation and usage examples
+1. **VALIDATE LIBRARY URL**: Require and verify the GCS bucket URL for the library
+2. **Research**: Look up the function documentation and understand its signature
+3. **Plan**: Determine the input/output structure and any special requirements
+4. **Create**: Generate the extension structure with appropriate metadata
+5. **Implement**: Write the SQL function with proper JavaScript integration
+6. **Test**: Create test cases to verify functionality
+7. **Document**: Provide clear documentation and usage examples
+
+## Validation Method
+
+Use this BigQuery approach to validate library URLs:
+
+```sql
+-- Step 1: Test basic library loading
+CREATE TEMP FUNCTION test_library_load()
+RETURNS STRING
+LANGUAGE js
+OPTIONS (library = ['gs://bucket-name/path/to/library.js'])
+AS """
+  return 'Library loaded successfully';
+""";
+
+-- Step 2: Execute the test
+SELECT test_library_load() as library_status;
+
+-- Step 3: If successful, test specific function availability
+CREATE TEMP FUNCTION test_function_availability()
+RETURNS STRING
+LANGUAGE js
+OPTIONS (library = ['gs://bucket-name/path/to/library.js'])
+AS """
+  try {
+    // Test if the expected function exists
+    if (typeof libraryName.functionName === 'function') {
+      return 'Function available';
+    } else {
+      return 'Function not found in library';
+    }
+  } catch (error) {
+    return 'Error: ' + error.message;
+  }
+""";
+
+SELECT test_function_availability() as function_status;
+```
 
 ## Common Libraries to Consider
 
