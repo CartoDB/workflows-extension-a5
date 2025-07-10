@@ -19,15 +19,13 @@ A Workflows Extension consists of:
 When wrapping JavaScript libraries, follow this pattern:
 
 ```sql
-CREATE OR REPLACE FUNCTION `@@BQ_DATASET@@.FUNCTION_NAME`
-(param1 TYPE1, param2 TYPE2, ...)
+CREATE TEMP FUNCTION FUNCTION_NAME(param1 TYPE1, param2 TYPE2, ...)
 RETURNS RETURN_TYPE
-DETERMINISTIC
 LANGUAGE js
 OPTIONS (
-    library = ["@@BQ_LIBRARY_BUCKET@@"]
+    library = ["gs://bucket-name/path/to/library.js"]
 )
-AS """
+AS r"""
     // JavaScript code that uses the library
     if (param1 === null || param2 === null) {
         return null;
@@ -55,7 +53,7 @@ When a user wants to wrap a JavaScript library function, follow this systematic 
    RETURNS STRING
    LANGUAGE js
    OPTIONS (library = ['gs://bucket-name/path/to/library.js'])
-   AS """
+   AS r"""
      return 'Library loaded successfully';
    """;
    
@@ -145,9 +143,18 @@ Common environment variables needed:
 
 ### Example GCS Library Reference:
 ```sql
+CREATE TEMP FUNCTION myFunc(a FLOAT64, b STRING)
+RETURNS STRING
+LANGUAGE js
 OPTIONS (
-    library = ["gs://my-bucket/path/to/library.js"]
+    library = ["gs://my-bucket/path/to/lib1.js", "gs://my-bucket/path/to/lib2.js"]
 )
+AS r"""
+  // Assumes 'doInterestingStuff' is defined in one of the library files.
+  return doInterestingStuff(a, b);
+""";
+
+SELECT myFunc(3.14, 'foo');
 ```
 
 ## Testing Strategy
@@ -201,7 +208,7 @@ CREATE TEMP FUNCTION test_function_availability()
 RETURNS STRING
 LANGUAGE js
 OPTIONS (library = ['gs://bucket-name/path/to/library.js'])
-AS """
+AS r"""
   try {
     // Test if the expected function exists
     if (typeof libraryName.functionName === 'function') {
