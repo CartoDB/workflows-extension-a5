@@ -34,6 +34,31 @@ AS r"""
 """;
 ```
 
+**CRITICAL: DO NOT USE THIS INCORRECT PATTERN:**
+```sql
+-- ❌ WRONG - DO NOT USE THIS PATTERN
+CREATE TEMP FUNCTION loadH3Library() AS (
+  'https://storage.googleapis.com/spatialextension_os/carto/libs/carto_analytics_toolbox_core_h3.js'
+);
+```
+
+**ALWAYS USE THE CORRECT PATTERN:**
+```sql
+-- ✅ CORRECT - ALWAYS USE THIS PATTERN
+CREATE TEMP FUNCTION geoToH3(lat FLOAT64, lng FLOAT64, res INT64)
+RETURNS STRING
+LANGUAGE js
+OPTIONS (
+    library = ["gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_h3.js"]
+)
+AS r"""
+    if (lat === null || lng === null || res === null) {
+        return null;
+    }
+    return h3Lib.geoToH3(lat, lng, res);
+""";
+```
+
 ## Automation Recipe
 
 When a user wants to wrap a JavaScript library function, follow this systematic approach:
@@ -87,7 +112,8 @@ When a user wants to wrap a JavaScript library function, follow this systematic 
 - Add any necessary environment variables for library buckets
 
 ### 5. SQL Implementation
-- Create the BigQuery function with proper parameter mapping
+- Create the BigQuery function with proper parameter mapping using the `LANGUAGE js` and `OPTIONS (library = [...])` pattern
+- **NEVER use `CREATE TEMP FUNCTION loadLibrary() AS ('url')` pattern**
 - Implement null checking for all parameters
 - Add appropriate type conversions (Number(), String(), etc.)
 - Handle edge cases and error conditions
@@ -100,6 +126,32 @@ When a user wants to wrap a JavaScript library function, follow this systematic 
 - Reference the original library documentation
 
 ## Common Patterns
+
+### SQL Function Creation Pattern
+**ALWAYS use this pattern for JavaScript library integration:**
+```sql
+CREATE TEMP FUNCTION functionName(param1 TYPE1, param2 TYPE2, ...)
+RETURNS RETURN_TYPE
+LANGUAGE js
+OPTIONS (
+    library = ["gs://bucket-name/path/to/library.js"]
+)
+AS r"""
+    // JavaScript implementation
+    if (param1 === null || param2 === null) {
+        return null;
+    }
+    return libraryName.functionName(param1, param2, ...);
+""";
+```
+
+**NEVER use this incorrect pattern:**
+```sql
+-- ❌ WRONG - This does NOT load the library properly
+CREATE TEMP FUNCTION loadLibrary() AS (
+  'gs://bucket-name/path/to/library.js'
+);
+```
 
 ### Parameter Type Mapping
 - JavaScript `number` → BigQuery `FLOAT64` or `INT64`
@@ -182,9 +234,11 @@ When a user says "wrap function X() from library Y", follow this workflow:
 2. **Research**: Look up the function documentation and understand its signature
 3. **Plan**: Determine the input/output structure and any special requirements
 4. **Create**: Generate the extension structure with appropriate metadata
-5. **Implement**: Write the SQL function with proper JavaScript integration
+5. **Implement**: Write the SQL function using the correct `LANGUAGE js` and `OPTIONS (library = [...])` pattern
 6. **Test**: Create test cases to verify functionality
 7. **Document**: Provide clear documentation and usage examples
+
+**IMPORTANT**: Always use the proper BigQuery JavaScript UDF pattern with `LANGUAGE js` and `OPTIONS (library = [...])`. Never use the incorrect `CREATE TEMP FUNCTION loadLibrary() AS ('url')` pattern.
 
 ## Validation Method
 
