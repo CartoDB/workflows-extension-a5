@@ -2,19 +2,17 @@
 -- Converts geographic coordinates to A5 cell index using the A5 library
 
 -- Create the A5 lonLatToCell function
-CREATE TEMP FUNCTION lonLatToCell(lng FLOAT64, lat FLOAT64, res INT64)
+CREATE TEMP FUNCTION lonLatToCell(lng FLOAT64, lat FLOAT64, res FLOAT64)
 RETURNS STRING
 LANGUAGE js
 OPTIONS (
-    library = ["gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js"]
+    library = ["gs://carto-workflows-extension-a5/a5.umd.js"]
 )
 AS r"""
     if (lng === null || lat === null || res === null) {
         return null;
     }
-    const coordinate = [lng, lat];
-    const result = a5Lib.lonLatToCell(coordinate, res);
-    return result.toString();
+    return A5.lonLatToCell([lng, lat], res);
 """;
 
 -- Create the output table with A5 cell index column

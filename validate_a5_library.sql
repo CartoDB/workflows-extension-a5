@@ -5,7 +5,7 @@
 CREATE TEMP FUNCTION test_library_load()
 RETURNS STRING
 LANGUAGE js
-OPTIONS (library = ['gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js'])
+OPTIONS (library = ['gs://carto-workflows-extension-a5/a5.umd.js'])
 AS r"""
   return 'Library loaded successfully';
 """;
@@ -14,10 +14,10 @@ AS r"""
 CREATE TEMP FUNCTION test_function_availability()
 RETURNS STRING
 LANGUAGE js
-OPTIONS (library = ['gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js'])
+OPTIONS (library = ['gs://carto-workflows-extension-a5/a5.umd.js'])
 AS r"""
   try {
-    if (typeof a5Lib.lonLatToCell === 'function') {
+    if (typeof A5.lonLatToCell === 'function') {
       return 'lonLatToCell function available';
     } else {
       return 'lonLatToCell function not found in library';
@@ -28,17 +28,15 @@ AS r"""
 """;
 
 -- Test 3: Actual function call
-CREATE TEMP FUNCTION test_lonLatToCell(lng FLOAT64, lat FLOAT64, res INT64)
+CREATE TEMP FUNCTION test_lonLatToCell(lng FLOAT64, lat FLOAT64, res FLOAT64)
 RETURNS STRING
 LANGUAGE js
-OPTIONS (library = ['gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js'])
+OPTIONS (library = ['gs://carto-workflows-extension-a5/a5.umd.js'])
 AS r"""
   if (lng === null || lat === null || res === null) {
     return null;
   }
-  const coordinate = [lng, lat];
-  const result = a5Lib.lonLatToCell(coordinate, res);
-  return result.toString();
+  return A5.lonLatToCell([lng, lat], res);
 """;
 
 -- Execute tests

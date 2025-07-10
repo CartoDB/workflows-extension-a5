@@ -39,8 +39,8 @@ Converts geographic coordinates (longitude, latitude) to A5 cell index at a spec
 - **Function**: `h3Lib.geoToH3(lat, lng, res)`
 
 ### A5 Library
-- **URL**: `gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js`
-- **Function**: `a5Lib.lonLatToCell([lng, lat], res)`
+- **URL**: `gs://carto-workflows-extension-a5/a5.umd.js`
+- **Function**: `A5.lonLatToCell([lng, lat], res)`
 
 ## H3 Resolution Levels
 
@@ -133,19 +133,17 @@ AS r"""
 
 ### A5 Component
 ```sql
-CREATE TEMP FUNCTION lonLatToCell(lng FLOAT64, lat FLOAT64, res INT64)
+CREATE TEMP FUNCTION lonLatToCell(lng FLOAT64, lat FLOAT64, res FLOAT64)
 RETURNS STRING
 LANGUAGE js
 OPTIONS (
-    library = ["gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js"]
+    library = ["gs://carto-workflows-extension-a5/a5.umd.js"]
 )
 AS r"""
     if (lng === null || lat === null || res === null) {
         return null;
     }
-    const coordinate = [lng, lat];
-    const result = a5Lib.lonLatToCell(coordinate, res);
-    return result.toString();
+    return A5.lonLatToCell([lng, lat], res);
 """;
 ```
 
@@ -156,8 +154,8 @@ AS r"""
 | **Cell Shape** | Hexagonal | Variable (depends on implementation) |
 | **Coordinate Order** | [lat, lng] | [lng, lat] |
 | **Resolution Range** | 0-15 | 0-20 |
-| **Return Type** | String | BigInt (converted to String) |
-| **Library Function** | `h3Lib.geoToH3(lat, lng, res)` | `a5Lib.lonLatToCell([lng, lat], res)` |
+| **Return Type** | String | String |
+| **Library Function** | `h3Lib.geoToH3(lat, lng, res)` | `A5.lonLatToCell([lng, lat], res)` |
 
 ## Testing
 

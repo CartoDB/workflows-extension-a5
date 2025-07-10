@@ -48,20 +48,20 @@ Output table with A5 cell index (resolution 9):
 
 ## Technical Details
 
-This component uses the A5 library hosted at `gs://spatialextension_os/carto/libs/carto_analytics_toolbox_core_a5.js` and creates a BigQuery JavaScript UDF that wraps the `a5Lib.lonLatToCell()` function.
+This component uses the A5 library hosted at `gs://carto-workflows-extension-a5/a5.umd.js` and creates a BigQuery JavaScript UDF that wraps the `A5.lonLatToCell()` function.
 
 The function:
 1. Takes longitude and latitude as separate parameters
 2. Creates a coordinate array `[longitude, latitude]` as expected by the A5 library
-3. Calls `a5Lib.lonLatToCell(coordinate, resolution)`
-4. Converts the returned bigint to a string for BigQuery compatibility
+3. Calls `A5.lonLatToCell([longitude, latitude], resolution)`
+4. Returns the result directly (no need for bigint conversion)
 5. Handles null values gracefully by returning null when any input parameter is null
 
 ## Function Signature
 
 The wrapped function follows the original A5 library signature:
 ```javascript
-lonLatToCell(coordinate: [longitude: number, latitude: number], resolution: number): bigint
+lonLatToCell(coordinate: [longitude: number, latitude: number], resolution: number): string
 ```
 
 ## References

@@ -16,17 +16,15 @@
             "name": "latitude_column",
             "title": "Latitude column",
             "description": "The column containing latitude values (decimal degrees)",
-            "type": "Column",
-            "parent": "input_table",
-            "dataType": ["float64", "int64", "numeric"]
+            "type": "String",
+            "placeholder": "latitude"
         },
         {
             "name": "longitude_column",
             "title": "Longitude column",
             "description": "The column containing longitude values (decimal degrees)",
-            "type": "Column",
-            "parent": "input_table",
-            "dataType": ["float64", "int64", "numeric"]
+            "type": "String",
+            "placeholder": "longitude"
         },
         {
             "name": "resolution",
