@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "inputs": {
+            "input_table": "table1",
+            "longitude_column": "lng",
+            "latitude_column": "lat",
+            "resolution": 9,
+            "output_column_name": "a5_cell"
+        }
+    },
+    {
+        "id": 2,
+        "inputs": {
+            "input_table": "table1",
+            "longitude_column": "lng",
+            "latitude_column": "lat",
+            "resolution": 2,
+            "output_column_name": "a5_coarse"
+        }
+    }
+] 

@@ -1,0 +1,57 @@
+{
+    "name": "a5_lonlattocell",
+    "title": "A5 Longitude Latitude to Cell",
+    "description": "Converts geographic coordinates (longitude, latitude) to A5 cell index at specified resolution using the A5 library",
+    "version": "1.0.0",
+    "icon": "component-default.svg",
+    "cartoEnvVars": [],
+    "inputs": [
+        {
+            "name": "input_table",
+            "title": "Input table",
+            "description": "The table containing longitude and latitude columns",
+            "type": "Table"
+        },
+        {
+            "name": "longitude_column",
+            "title": "Longitude column",
+            "description": "The column containing longitude values (decimal degrees)",
+            "type": "Column",
+            "parent": "input_table",
+            "dataType": ["float64", "int64", "numeric"]
+        },
+        {
+            "name": "latitude_column",
+            "title": "Latitude column",
+            "description": "The column containing latitude values (decimal degrees)",
+            "type": "Column",
+            "parent": "input_table",
+            "dataType": ["float64", "int64", "numeric"]
+        },
+        {
+            "name": "resolution",
+            "title": "A5 resolution",
+            "description": "The A5 resolution level to index at",
+            "type": "Number",
+            "min": 0,
+            "max": 20,
+            "default": 9
+        },
+        {
+            "name": "output_column_name",
+            "title": "Output column name",
+            "description": "Name for the output A5 cell index column",
+            "type": "String",
+            "default": "a5_cell",
+            "placeholder": "a5_cell"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "output_table",
+            "title": "Output table",
+            "description": "The table with A5 cell index column added",
+            "type": "Table"
+        }
+    ]
+} 

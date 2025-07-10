@@ -1,8 +1,8 @@
 {
-    "name": "h3-extension",
-    "title": "H3 Geospatial Extension",
+    "name": "geospatial-extension",
+    "title": "Geospatial Indexing Extension",
     "industry": "Geospatial",
-    "description": "Extension providing H3 geospatial indexing functions for BigQuery",
+    "description": "Extension providing H3 and A5 geospatial indexing functions for BigQuery",
     "icon": "extension-default.svg",
     "version": "1.0.0",
     "lastUpdate": "2024-01-31",
@@ -32,6 +32,7 @@
     ],
     "components": [
         "template",
-        "h3_geotoh3"
+        "h3_geotoh3",
+        "a5_lonlattocell"
     ]
 }
