@@ -12,7 +12,7 @@ AS r"""
     if (lng === null || lat === null || res === null) {
         return null;
     }
-    return A5.lonLatToCell([lng, lat], res);
+    return A5.bigIntToHex(A5.lonLatToCell([lng, lat], res));
 """;
 
 -- Create the output table with A5 cell index column
