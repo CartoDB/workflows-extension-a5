@@ -16,7 +16,10 @@ AS r"""
     const options = { closedRing: true, segments: 'auto' };
     try {
         const boundary = A5.cellToBoundary(A5.hexToBigInt(cell), options);
-        return JSON.stringify(boundary);
+        return JSON.stringify({
+            type: 'Polygon',
+            coordinates: boundary
+        });
     } catch (error) {
         return null;
     }
