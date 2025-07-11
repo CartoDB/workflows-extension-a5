@@ -19,21 +19,7 @@
             "type": "String",
             "placeholder": "a5_cell"
         },
-        {
-            "name": "closed_ring",
-            "title": "Closed ring",
-            "description": "Whether to close the ring by repeating the first point at the end",
-            "type": "Boolean",
-            "default": true
-        },
-        {
-            "name": "segments",
-            "title": "Segments",
-            "description": "Number of segments to use for each edge. Use 'auto' for resolution-appropriate value",
-            "type": "String",
-            "default": "auto",
-            "placeholder": "auto"
-        },
+
         {
             "name": "output_column_name",
             "title": "Output column name",

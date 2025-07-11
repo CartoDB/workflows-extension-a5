@@ -15,7 +15,7 @@ AS r"""
     
     const options = { closedRing: true, segments: 'auto' };
     try {
-        const boundary = A5.cellToBoundary(BigInt(cell), options);
+        const boundary = A5.cellToBoundary(A5.hexToBigInt(cell), options);
         return JSON.stringify(boundary);
     } catch (error) {
         return null;
@@ -27,8 +27,6 @@ EXECUTE IMMEDIATE '''
 CREATE TABLE IF NOT EXISTS ''' || output_table || '''
 OPTIONS (expiration_timestamp = TIMESTAMP_ADD(CURRENT_TIMESTAMP(), INTERVAL 30 DAY))
 AS SELECT *, 
-    cellToBoundary(CAST(''' || cell_column || ''' AS STRING), 
-                   ''' || closed_ring || ''', 
-                   ''' || segments || ''') AS ''' || output_column_name || '''
+    cellToBoundary(CAST(''' || cell_column || ''' AS STRING)) AS ''' || output_column_name || '''
 FROM ''' || input_table || ''';
 '''; 

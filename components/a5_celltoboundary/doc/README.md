@@ -8,9 +8,7 @@ The `cellToBoundary` function returns the vertices that define the boundary of a
 
 ## Parameters
 
-- **cell_column**: The column containing A5 cell identifiers (bigint values)
-- **closed_ring**: Boolean flag to close the ring by repeating the first point at the end (default: true)
-- **segments**: Number of segments to use for each edge. Use 'auto' for resolution-appropriate value (default: 'auto')
+- **cell_column**: The column containing A5 cell identifiers (string values)
 - **output_column_name**: Name for the output boundary coordinates column (default: 'a5_boundary')
 
 ## Output
@@ -37,7 +35,7 @@ Output table with boundary coordinates:
 
 ## Usage Notes
 
-- The cell identifiers should be valid A5 cell values
+- The cell identifiers should be valid A5 cell values in string format
 - The boundary coordinates are returned as JSON strings for easy parsing
 - Invalid cell identifiers will return null values
-- The function handles both numeric and string representations of cell identifiers 
+- The function uses hardcoded options: closedRing=true and segments='auto' 
