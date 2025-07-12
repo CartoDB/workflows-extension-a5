@@ -32,6 +32,7 @@
     ],
     "components": [
         "a5_celltoboundary",
-        "a5_geotocell"
+        "a5_geotocell",
+        "a5_celltocenter"
     ]
 }

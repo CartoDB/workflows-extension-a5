@@ -1,0 +1,39 @@
+{
+    "name": "a5_celltocenter",
+    "title": "A5 Cell to Center",
+    "description": "Returns the geospatial coordinate at the center of an A5 cell.",
+    "version": "1.0.0",
+    "icon": "a5-center.svg",
+    "cartoEnvVars": [],
+    "inputs": [
+        {
+            "name": "input_table",
+            "title": "Input table",
+            "description": "The table containing A5 cell identifiers",
+            "type": "Table"
+        },
+        {
+            "name": "cell_column",
+            "title": "Cell column",
+            "description": "The column containing A5 cell identifiers",
+            "type": "String",
+            "placeholder": "a5_cell"
+        },
+        {
+            "name": "output_column_name",
+            "title": "Output column name",
+            "description": "Name for the output center coordinate column",
+            "type": "String",
+            "default": "a5_center",
+            "placeholder": "a5_center"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "output_table",
+            "title": "Output table",
+            "description": "The table with A5 cell center coordinate column added",
+            "type": "Table"
+        }
+    ]
+} 
