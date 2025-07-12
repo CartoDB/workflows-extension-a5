@@ -3,7 +3,7 @@
     "title": "A5 Geography to Cell",
     "description": "Converts a GEOGRAPHY column to an A5 cell index at the specified resolution using the A5 library.",
     "version": "1.0.0",
-    "icon": "component-default.svg",
+    "icon": "a5-from-geopoint.svg",
     "cartoEnvVars": [],
     "inputs": [
         {

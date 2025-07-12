@@ -3,7 +3,7 @@
     "title": "A5 Cell to Boundary",
     "description": "Returns the vertices that define the boundary of an A5 cell",
     "version": "1.0.0",
-    "icon": "component-default.svg",
+    "icon": "a5-boundary.svg",
     "cartoEnvVars": [],
     "inputs": [
         {
