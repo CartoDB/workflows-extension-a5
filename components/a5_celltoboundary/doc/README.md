@@ -13,7 +13,7 @@ The `cellToBoundary` function returns the vertices that define the boundary of a
 
 ## Output
 
-The component adds a new column containing BigQuery geography objects representing the A5 cell boundaries. Each boundary is converted from the A5 cell identifier to a proper geography object that can be used directly for spatial operations.
+The component adds a new column containing WKT (Well-Known Text) strings representing the A5 cell boundaries. Each boundary is converted from the A5 cell identifier to WKT format that can be used with spatial functions like ST_GEOGFROMTEXT.
 
 ## Example
 
@@ -36,7 +36,7 @@ Output table with geography objects:
 ## Usage Notes
 
 - The cell identifiers should be valid A5 cell values in string format
-- The output is a BigQuery geography object that can be used directly for spatial operations
+- The output is a WKT string that can be converted to geography using ST_GEOGFROMTEXT
 - Invalid cell identifiers will return null values
 - The function uses hardcoded options: closedRing=true and segments='auto'
-- No additional processing needed - the component handles the conversion from A5 cell to geography object 
+- Use ST_GEOGFROMTEXT in your workflow to convert the WKT to geography objects 
