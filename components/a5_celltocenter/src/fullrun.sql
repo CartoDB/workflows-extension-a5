@@ -14,7 +14,7 @@ AS r"""
     }
     try {
         const center = A5.cellToLonLat(A5.hexToBigInt(cell));
-        return 'POINT((' + center[0] + ' ' + center[1] + '))';
+        return 'POINT(' + center[0] + ' ' + center[1] + ')';
     } catch (error) {
         return null;
     }
