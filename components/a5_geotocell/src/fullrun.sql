@@ -1,5 +1,5 @@
--- A5 Longitude Latitude to Cell Component
--- Converts geographic coordinates to A5 cell index using the A5 library
+-- A5 Geography to Cell Component
+-- Converts a GEOGRAPHY column to an A5 cell index using the A5 library
 
 -- Create the A5 lonLatToCell function
 CREATE TEMP FUNCTION lonLatToCell(lng FLOAT64, lat FLOAT64, res FLOAT64)
@@ -20,8 +20,6 @@ EXECUTE IMMEDIATE '''
 CREATE TABLE IF NOT EXISTS ''' || output_table || '''
 OPTIONS (expiration_timestamp = TIMESTAMP_ADD(CURRENT_TIMESTAMP(), INTERVAL 30 DAY))
 AS SELECT *, 
-    lonLatToCell(CAST(''' || longitude_column || ''' AS FLOAT64), 
-                 CAST(''' || latitude_column || ''' AS FLOAT64), 
-                 ''' || resolution || ''') AS ''' || output_column_name || '''
+    lonLatToCell(ST_X(''' || geo_column || '''), ST_Y(''' || geo_column || '''), ''' || resolution || ''') AS ''' || output_column_name || '''
 FROM ''' || input_table || ''';
 '''; 

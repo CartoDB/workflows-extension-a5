@@ -31,7 +31,7 @@
         }
     ],
     "components": [
-        "a5_lonlattocell",
-        "a5_celltoboundary"
+        "a5_celltoboundary",
+        "a5_geotocell"
     ]
 }

@@ -1,4 +1,4 @@
--- A5 Longitude Latitude to Cell Component - Dry Run
+-- A5 Geography to Cell Component - Dry Run
 -- Creates the output schema without executing the A5 function
 
 EXECUTE IMMEDIATE '''

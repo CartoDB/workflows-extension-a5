@@ -1,7 +1,7 @@
 {
-    "name": "a5_lonlattocell",
-    "title": "A5 Longitude Latitude to Cell",
-    "description": "Converts geographic coordinates (longitude, latitude) to A5 cell index at specified resolution using the A5 library",
+    "name": "a5_geotocell",
+    "title": "A5 Geography to Cell",
+    "description": "Converts a GEOGRAPHY column to an A5 cell index at the specified resolution using the A5 library.",
     "version": "1.0.0",
     "icon": "component-default.svg",
     "cartoEnvVars": [],
@@ -9,22 +9,15 @@
         {
             "name": "input_table",
             "title": "Input table",
-            "description": "The table containing longitude and latitude columns",
+            "description": "The table containing the GEOGRAPHY column",
             "type": "Table"
         },
         {
-            "name": "longitude_column",
-            "title": "Longitude column",
-            "description": "The column containing longitude values (decimal degrees)",
+            "name": "geo_column",
+            "title": "Geography column",
+            "description": "The column containing GEOGRAPHY values",
             "type": "String",
-            "placeholder": "longitude"
-        },
-        {
-            "name": "latitude_column",
-            "title": "Latitude column",
-            "description": "The column containing latitude values (decimal degrees)",
-            "type": "String",
-            "placeholder": "latitude"
+            "placeholder": "geom"
         },
         {
             "name": "resolution",
