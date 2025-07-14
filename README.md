@@ -1,9 +1,9 @@
-# A5 Geospatial Extension
+# CARTO Workflows A5 Geospatial Extension
 
 A5 is an open-source, next-generation hierarchical spatial index for geospatial data. It enables fast, scalable, and precise spatial analytics by dividing the world into a grid of pentagonal cells at multiple resolutions. A5 cells have equal area, minimal distortion, and are well-suited for spatial analysis and aggregation.  
 Learn more at [a5geo.org](https://a5geo.org/).
 
-<img src="https://a5geo.org/assets/images/a5-preview-0b9f90a150c8affef7bf1211935d9916.png" alt="A5 Logo" width="120"/>
+<img src="https://a5geo.org/assets/images/a5-preview-0b9f90a150c8affef7bf1211935d9916.png" alt="A5 Logo" width="600"/>
 
 ## Extension Functions
 
