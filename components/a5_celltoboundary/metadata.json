@@ -1,0 +1,40 @@
+{
+    "name": "a5_celltoboundary",
+    "title": "A5 Cell to Boundary",
+    "description": "Returns the vertices that define the boundary of an A5 cell",
+    "version": "1.0.0",
+    "icon": "a5-boundary.svg",
+    "cartoEnvVars": [],
+    "inputs": [
+        {
+            "name": "input_table",
+            "title": "Input table",
+            "description": "The table containing A5 cell identifiers",
+            "type": "Table"
+        },
+        {
+            "name": "cell_column",
+            "title": "Cell column",
+            "description": "The column containing A5 cell identifiers",
+            "type": "String",
+            "placeholder": "a5_cell"
+        },
+
+        {
+            "name": "output_column_name",
+            "title": "Output column name",
+            "description": "Name for the output boundary coordinates column",
+            "type": "String",
+            "default": "a5_boundary",
+            "placeholder": "a5_boundary"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "output_table",
+            "title": "Output table",
+            "description": "The table with A5 cell boundary coordinates column added",
+            "type": "Table"
+        }
+    ]
+} 
